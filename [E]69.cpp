@@ -11,11 +11,9 @@ public:
             long p = mid * mid;
             if (p > x) {
                 r = mid - 1;
-            }
-            else if (p < x) {
+            } else if (p < x) {
                 l = mid + 1;
-            }
-            else {
+            } else {
                 return mid;
             }
         }
