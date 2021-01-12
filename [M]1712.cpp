@@ -42,8 +42,7 @@ public:
             int mid = l + (r - l) / 2;
             if (pref[n-1] - pref[mid] >= pref[mid] - low) {
                 l = mid;
-            }
-            else {
+            } else {
                 r = mid;
             }
         }
@@ -65,10 +64,14 @@ public:
             int low = pref[i];
             
             int left = findLeft(i, n - 2, low);
-            if (pref[left] - low < low) break;
+            if (pref[left] - low < low) {
+		break;
+	    }
 
             int right = findRight(i + 1, n - 1, low);
-            if (pref[n-1] - pref[right] < pref[right] - low) break;
+            if (pref[n-1] - pref[right] < pref[right] - low) {
+		break;
+	    }
             
             count += max(0, right - left + 1);
             count %= mod;
