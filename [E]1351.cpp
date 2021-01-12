@@ -23,8 +23,7 @@ public:
                 int mid = l + (r - l) / 2;
                 if (grid[i][mid] >= 0) {
                     l = mid;
-                }
-                else {
+                } else {
                     r = mid;
                 }
             }
