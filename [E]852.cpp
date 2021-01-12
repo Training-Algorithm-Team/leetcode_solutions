@@ -9,8 +9,7 @@ public:
             int mid = l + (r - l) / 2;
             if (arr[mid] < arr[mid-1]) {
                 r = mid;
-            }
-            else {
+            } else {
                 l = mid;
             }
         }
