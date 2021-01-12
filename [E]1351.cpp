@@ -16,10 +16,9 @@ public:
     int countNegatives(vector<vector<int>>& grid) {
         int m = grid.size(), n = grid[0].size();
         
-        int l = 0, r = n;
         int count = 0;
         for (int i = 0; i < m; ++i) {
-            l = 0;
+            int l = 0, r = n;
             while (r - l > 1) {
                 int mid = l + (r - l) / 2;
                 if (grid[i][mid] >= 0) {
