@@ -65,13 +65,13 @@ public:
             
             int left = findLeft(i, n - 2, low);
             if (pref[left] - low < low) {
-		break;
-	    }
+		        break;
+	        }
 
             int right = findRight(i + 1, n - 1, low);
             if (pref[n-1] - pref[right] < pref[right] - low) {
-		break;
-	    }
+		        break;
+	        }
             
             count += max(0, right - left + 1);
             count %= mod;
