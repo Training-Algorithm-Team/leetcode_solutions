@@ -22,8 +22,9 @@ public:
     int n;
     vector<int> pref;
     const int mod = 1e9 + 7;
-    
-    int findLeft(int l, int r, int low) {
+
+    int findLeft(int startIdx, int endIdx, int low) {
+        int l = startIdx, r = endIdx;
         while (r - l > 1) {
             int mid = l + (r - l) / 2;
             if (pref[mid] - low >= low) {
@@ -34,11 +35,11 @@ public:
         }
         return r;
     }
-    
-    int findRight(int l, int r, int low) {
+
+    int findRight(int startIdx, int endIdx, int low) {
+        int l = startIdx, r = endIdx;
         while (r - l > 1) {
             int mid = l + (r - l) / 2;
-            // cout << endl << "mid = " << mid;
             if (pref[n-1] - pref[mid] >= pref[mid] - low) {
                 l = mid;
             }
@@ -46,36 +47,29 @@ public:
                 r = mid;
             }
         }
-        // cout << endl;
         return l;
     }
-    
+
     int waysToSplit(vector<int>& nums) {
         n = nums.size();
         pref.resize(n, 0);
         pref[0] = nums[0];
-        
-        // cout << pref[0] << " ";
+
         for (int i = 1; i < n; ++i) {
             pref[i] = pref[i-1] + nums[i];
-            // cout << pref[i] << " ";
         }
-        // cout << endl;
-        
-        
+
+
         int count = 0;
         for (int i = 0; i < n - 2; ++i) {
-            int l = i, r = n - 2, low = pref[i];
-            // cout << "l = " << l << " r = " << r << " low = " << low;
-            int left = findLeft(l, r, low);
+            int low = pref[i];
+            
+            int left = findLeft(i, n - 2, low);
             if (pref[left] - low < low) break;
-            
-            // cout << " left = " << left;
-            
-            l = i + 1, r = n - 1;
-            int right = findRight(l, r, low);
+
+            int right = findRight(i + 1, n - 1, low);
             if (pref[n-1] - pref[right] < pref[right] - low) break;
-            // cout << " right = " << right << endl;
+            
             count += max(0, right - left + 1);
             count %= mod;
         }
