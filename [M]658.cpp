@@ -10,15 +10,17 @@ class Solution {
 public:
     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
         int n = arr.size();
-        int s = 0;
-        while (s < n) {
-            if (arr[s] >= x) {
-                break;
+        int l = 0, r = n - 1;
+        while (r - l > 0) {
+            int mid = l + (r - l) / 2;
+            if (arr[mid] >= x) {
+                r = mid;
+            } else {
+                l = mid + 1;
             }
-            s++;
         }
         
-        int i = s, j = s - 1;
+        int i = r, j = r - 1;
         deque<int> res;
         while (i < n || j >=0) {
             if (i < n) {
