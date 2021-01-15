@@ -3,34 +3,32 @@
 
 class Solution {
 public:
-    int find(const vector<int> &nums, int l, int r, int target) {
-        if (l == r) {
-            return nums[l] == target? l : -1;
+    int search(vector<int>& nums, int target) {
+        int l = 0, r = nums.size() - 1;
+        while(r - l > 1) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] > target) {
+                if (target >= nums[l] || nums[mid] < nums[l]) {
+                    r = mid - 1;
+                } else {
+                    l = mid + 1;
+                }
+            } else {
+                if (target < nums[l] || nums[l] < nums[mid]) {
+                    l = mid + 1;
+                } else {
+                    r = mid - 1;
+                }
+            }
         }
-        else if (l > r) {
+        if (nums[l] == target) {
+            return l;
+        } else if (nums[r] == target) {
+            return r;
+        } else {
             return -1;
         }
-        
-        int mid = l + (r - l) / 2;
-        int res;
-        if (nums[mid] == target) {
-            return mid;
-        }
-        else if (nums[mid] < target) {
-            res = find(nums, mid + 1, r, target);
-            if (nums[mid] < nums[l]) {
-                res = max(res, find(nums, l, mid - 1, target));
-            }
-        }
-        else {
-            res = find(nums, l, mid - 1, target);
-            if (nums[mid] > nums[r]) {
-                res = max(res, find(nums, mid + 1, r, target));
-            }
-        }
-        return res;
-    }
-    int search(vector<int>& nums, int target) {
-        return find(nums, 0, nums.size() - 1, target);
     }
 };
