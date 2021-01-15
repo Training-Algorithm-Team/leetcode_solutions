@@ -12,20 +12,17 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& numbers, int target) {
-        for (int i = 0; i < numbers.size() - 1 && numbers[i] * 2 <= target; ++i) {
-            int l = i + 1, r = numbers.size();
-            while (r - l > 1) {
-                int mid = l + (r - l) / 2;
-                if (numbers[mid] + numbers[i] <= target) {
-                    l = mid;
-                } else {
-                    r = mid;
-                }
-            }
-            if (numbers[l] + numbers[i] == target) {
-                return {i + 1, l + 1};
+        int i = 0, j = numbers.size() - 1;
+        while (i < j) {
+            int sum = numbers[i] + numbers[j];
+            if (sum == target) {
+                return {i+1, j+1};
+            } else if (sum > target) {
+                j--;
+            } else {
+                i++;
             }
         }
-        return {-1, -1};
+        return {-1,-1};
     }
 };
