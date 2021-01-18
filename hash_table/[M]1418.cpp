@@ -9,7 +9,7 @@ số lượng, việc này tăng độ phức tạp. Như vậy, ta có thể d�
 - Ta cần thêm một map tổng, chứa danh sách toàn bộ các món ăn cung cấp. Ta phải sử dụng map để có thể duyệt theo thứ tự alphabet của các món ăn.
 
 - Tuy nhiên, sau đó, tôi quyết định sử dụng hướng khác, đó là lưu một map của các món ăn, mối món ăn lưu một vector để lưu số lượng đặt món ăn đó của mỗi bàn.
-- Cách này tôi nghĩ là tốt hơn, nhưng sau khi implement thì thấy hơi phức tạp vì ngược với hướng suy nghĩ thông thường. 
+- Cách này tôi nghĩ là tốt hơn, nhưng sau khi implement thì thấy phức tạp hơn nhiều vì ngược với hướng suy nghĩ thông thường và xử lý code hơi phức tạp.
 - Ngoài ra vẫn phải lưu thêm 1 set các bàn có khách. Vì vậy độ phức tạp không gian cũng không khác gì phương pháp trước cho lắm.
 - Time complexity: Hơi phức tạp. Có vẻ là: O(nlog(n)*mlog(m)). Lí do là với trường hợp 2 vòng for qua map và set, độ phức tạp thao tác ++ trên binary tree là O(logn).
 - Space complexity: O(m * n). Mảng res cần lưu tối đa là: số lượng bàn * số lượng món.
