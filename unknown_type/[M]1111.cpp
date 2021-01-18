@@ -7,7 +7,7 @@
 - Ta chỉ có thể giảm depth của VPS có dạng "A" và chia nó thành "BC" với depth(B + C) = depth(A).
 - Như vậy, phương án đầu tiên tôi nghĩ ra đó là duyệt toàn bộ string một lần, đếm maxLvl (maxDepth) của string. Sau đó duyệt lần 2, với tất cả các kí tự nằm ở 
 depth <= maxDepth / 2, ta cho về xâu 0. Nếu nằm ở depth > maxDepth / 2, ta đưa về xâu 1. Như vậy ta sẽ chia được thành 2 xâu có max depth = maxDepth ban đầu / 2.
-Đây là phương án tốt nhất có thể.
+Đây là đáp án tốt nhất có thể.
 - Tuy nhiên phương án này cần 2 lần duyệt mảng.
 - Sau đó, tôi đi đến một phương án tốt hơn, chỉ cần 1 lần duyệt mảng. Đó là đưa tất cả các kí tự ở depth chẵn về một xâu, các kí tự ở depth lẻ về một xâu. Như vậy, 
 kết quả cuối cùng cũng sẽ gồm 2 xâu có max depth = maxDepth ban đầu / 2.
