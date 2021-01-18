@@ -11,6 +11,8 @@ depth <= maxDepth / 2, ta cho về xâu 0. Nếu nằm ở depth > maxDepth / 2,
 - Tuy nhiên phương án này cần 2 lần duyệt mảng.
 - Sau đó, tôi đi đến một phương án tốt hơn, chỉ cần 1 lần duyệt mảng. Đó là đưa tất cả các kí tự ở depth chẵn về một xâu, các kí tự ở depth lẻ về một xâu. Như vậy, 
 kết quả cuối cùng cũng sẽ gồm 2 xâu có max depth = maxDepth ban đầu / 2.
+- Còn một chút ý, đó là với kí tự '(', thì ta phải tăng depth trước khi xử lý. Còn với kí tự ')', thì nó ở cùng lvl với kí tự mở ngoặc, do đó ta cần xử lý trước để có thể
+xử lý tương đương với kí tự mở ngoặc, sau đó mới giảm depth. 
 */
 
 class Solution {
