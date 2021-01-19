@@ -25,9 +25,7 @@ public:
         int res = 0;
         for (auto it = hs.begin(); it != hs.end(); ++it) {
             int val = it->second;
-            if (val >= 2) {
-                res += 8 * val * (val - 1) / 2;
-            }
+            res += 8 * val * (val - 1) / 2;
         }
         return res;
     }
