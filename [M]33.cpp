@@ -1,6 +1,11 @@
 // Problem: 33. Search in Rotated Sorted Array
 // Link: https://leetcode.com/problems/search-in-rotated-sorted-array/
 
+/* Nhận xét:
+- Sau khi vẽ và thử các trường hợp có thể, ta thấy bài này có thể sử dụng binary search, key point là phải điều chỉnh biên l, r hợp lý trong từng trường hợp.
+- Trường hợp này tôi vẽ ra giấy để tưởng tượng các trường hợp có thể nên hơi khó giải thích ở đây. Bạn có cách giải thích nào tốt hơn không?
+*/
+
 class Solution {
 public:
     int search(vector<int>& nums, int target) {
