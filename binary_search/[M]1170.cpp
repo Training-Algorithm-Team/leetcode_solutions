@@ -30,17 +30,15 @@ public:
     
     vector<int> numSmallerByFrequency(vector<string>& queries, vector<string>& words) {
         int m = queries.size(), n = words.size();
-        vector<int> freqq, freqw;
-        for (string s : queries) {
-            freqq.push_back(countSmallestFreq(s));
-        }
-        for (string s : words) {
+        vector<int> freqw;
+        for (string &s : words) {
             freqw.push_back(countSmallestFreq(s));
         }
         sort(freqw.begin(), freqw.end());
         
         vector<int> res;
-        for (int f : freqq) {
+        for (string &s : queries) {
+            int f = countSmallestFreq(s);
             int l = 0, r = n;
             while (r - l > 0) {
                 int mid = l + (r - l) / 2;
