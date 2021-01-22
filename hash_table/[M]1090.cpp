@@ -16,21 +16,19 @@ public:
         vector<int> idx(n);
         iota(idx.begin(), idx.end(), 0);
         
-        make_heap(idx.begin(), idx.end(), [&](const int &a, const int &b) {
-            return values[a] < values[b];
+        sort(idx.begin(), idx.end(), [&](const int &a, const int &b) {
+            return values[a] > values[b];
         });
         
         int got = 0;
         unordered_map<int, int> used;
         int sum = 0;
-        while (got < num_wanted && !idx.empty()) {
-            int i = idx.front();
+        int tested = 0;
+        while (got < num_wanted && tested < n) {
+            int i = idx[tested];
             int val = values[i];
             int l = labels[i];
-            pop_heap(idx.begin(), idx.end(), [&](const int &a, const int &b) {
-                return values[a] < values[b];
-            }); 
-            idx.pop_back();
+            tested++;
             
             if (used[l] < use_limit) {
                 got++;
