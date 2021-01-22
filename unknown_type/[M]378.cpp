@@ -21,7 +21,10 @@ public:
     }
 };
 
-// C2: loang từ phần tử bé nhất, sau đó thêm vào heap, chọn lần lượt cho tới đến khi đủ k phần tử
+// C2: Bắt đầu từ phần tử bé nhất của mỗi hàng, sau đó thêm vào heap, chọn lần lượt cho tới đến khi đủ k phần tử, mỗi khi loại một phần tử ra thì chỉ cần thêm vào 
+// phần tử tiếp theo của hàng đó
+// => Time complexity: O(nlog(n) + klog(n)). nlogn cho thao tác tạo heap ban đầu. Sau đó, k lần lấy phần tử ra, mỗi lần lại thêm vào 1 phần tử nên số phần tử
+// trong heap luôn được giữ là n => thao tác push heap sẽ có độ phức tạp log(n)
 class Solution {
 public:
     int kthSmallest(vector<vector<int>>& matrix, int k) {
@@ -31,11 +34,11 @@ public:
         };
         
         vector<pair<int, int>> heap;
-        vector<vector<bool>> expanded(n, vector<bool>(n, false));
+        for (int i = 0; i < n; ++i) {
+            heap.push_back({i, 0});
+        }
         int count = 0;
-        expanded[0][0] = true;
-        heap.push_back({0, 0});
-        
+        make_heap(heap.begin(), heap.end(), comp);        
         
         while (count < k && !heap.empty()) {
             auto [r, c] = heap.front();
@@ -44,22 +47,10 @@ public:
                 return matrix[r][c];
             }
             
-            if (r < n - 1) {
-                int nr = r + 1;
-                if (!expanded[nr][c]) {
-                    expanded[nr][c] = true;
-                    heap.push_back({nr, c});
-                    push_heap(heap.begin(), heap.end(), comp);
-                }
-            }
-            
             if (c < n - 1) {
                 int nc = c + 1;
-                if (!expanded[r][nc]) {
-                    expanded[r][nc] = true;
-                    heap.push_back({r, nc});
-                    push_heap(heap.begin(), heap.end(), comp);
-                }
+                heap.push_back({r, nc});
+                push_heap(heap.begin(), heap.end(), comp);
             }            
         }
         return -1;
