@@ -22,23 +22,23 @@ public:
         
         int i = r, j = r - 1;
         deque<int> res;
-        while (i < n || j >=0) {
-            if (i < n) {
-                if (j >= 0) {
-                    if (x - arr[j] <= arr[i] - x) {
-                        res.push_front(arr[j--]);
-                    } else {
-                        res.push_back(arr[i++]);
-                    }
-                } else {
-                    res.push_back(arr[i++]);  
-                }
+        while (i < n && j >=0) {
+            if (x - arr[j] <= arr[i] - x) {
+                res.push_front(arr[j--]);
             } else {
-                res.push_front(arr[j--]);  
+                res.push_back(arr[i++]);
             }
             if (0 == --k) {
                 break;
             }
+        }
+        while (i < n && k > 0) {
+            res.push_back(arr[i++]);
+            k--;
+        }
+        while (j >= 0 && k > 0) {
+            res.push_front(arr[j--]);
+            k--;
         }
         return vector<int>(res.begin(), res.end());
     }
