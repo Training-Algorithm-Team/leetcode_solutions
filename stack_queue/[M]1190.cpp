@@ -13,7 +13,8 @@ public:
     string reverseParentheses(string s) {
         stack<string> st;
         string cur;
-        for (char c : s) {
+        cur.reserve(s.size());
+        for (char &c : s) {
             if (c == '(') {
                 st.push(cur);
                 cur = "";
