@@ -13,20 +13,19 @@ class Solution {
 public:
     void computeHash(unordered_map<int, int> &hs, const vector<int> &a, const vector<int> &b) {
         for (int i = 0; i < a.size(); i++) {
-            for (int j = 0; j < a.size(); j++) {
+            for (int j = 0; j < b.size(); j++) {
                 hs[a[i] + b[j]]++;
             }
         }
     }
     
     int fourSumCount(vector<int>& a, vector<int>& b, vector<int>& c, vector<int>& d) {        
-        unordered_map<int, int> hs1, hs2;
-        computeHash(hs1, a, b);
-        computeHash(hs2, c, d);
+        unordered_map<int, int> hs;
+        computeHash(hs, a, b);
         int res = 0;
-        for (auto &[k, v] : hs1) {
-            if (hs2[-k] != 0) {
-                res += v * hs2[-k];
+        for (int &v1 : c) {
+            for (int &v2 : d) {
+                res += hs[-v1 - v2];
             }
         }
         return res;
