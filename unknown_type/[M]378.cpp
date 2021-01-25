@@ -39,7 +39,8 @@ public:
     int kthSmallest(vector<vector<int>>& matrix, int k) {
         int n = matrix.size();
         
-        priority_queue<pp, vector<pp>, Comp> heap;
+        Comp comp;
+        priority_queue heap(comp, vector<pp>());
         for (int i = 0; i < k && i < n; ++i) {
             heap.push({matrix[i][0], {i, 0}});
         }
