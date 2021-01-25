@@ -27,30 +27,35 @@ public:
 // trong heap luôn được giữ là n => thao tác push heap sẽ có độ phức tạp log(n)
 class Solution {
 public:
+    typedef pair<int, pair<int, int>> pp;
+    
+    class Comp {
+    public:
+        bool operator() (const pp &a, const pp &b) {
+            return a.first > b.first;
+        }
+    };
+    
     int kthSmallest(vector<vector<int>>& matrix, int k) {
         int n = matrix.size();
-        auto comp = [&] (const pair<int, int> &a, const pair<int, int> &b) {
-            return matrix[a.first][a.second] > matrix[b.first][b.second];
-        };
         
-        vector<pair<int, int>> heap;
-        for (int i = 0; i < n; ++i) {
-            heap.push_back({i, 0});
+        priority_queue<pp, vector<pp>, Comp> heap;
+        for (int i = 0; i < k && i < n; ++i) {
+            heap.push({matrix[i][0], {i, 0}});
         }
         int count = 0;
-        make_heap(heap.begin(), heap.end(), comp);        
         
         while (count < k && !heap.empty()) {
-            auto [r, c] = heap.front();
-            pop_heap(heap.begin(), heap.end(), comp); heap.pop_back();
+            auto val = heap.top();
+            int r = val.second.first;
+            int c = val.second.second;
+            heap.pop();
             if (++count == k) {
                 return matrix[r][c];
             }
             
             if (c < n - 1) {
-                int nc = c + 1;
-                heap.push_back({r, nc});
-                push_heap(heap.begin(), heap.end(), comp);
+                heap.push({matrix[r][c+1], {r, c + 1}});
             }            
         }
         return -1;
