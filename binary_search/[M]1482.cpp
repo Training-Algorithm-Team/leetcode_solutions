@@ -12,15 +12,15 @@
 class Solution {
 public:
     bool canMake(const vector<int>& bloomDay, int m, int k, int d) {
-        int count = 0, a = 0;
+        int count = 0, adj = 0;
         for (auto &b : bloomDay) {
             if (b <= d) {
-                if (++a >= k) {
+                if (++adj >= k) {
                     count++;
-                    a = 0;
+                    adj = 0;
                 }
             } else {
-                a = 0;
+                adj = 0;
             }
         }
         return count >= m;
