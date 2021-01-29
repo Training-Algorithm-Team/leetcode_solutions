@@ -43,3 +43,29 @@ public:
         return l * 2;
     }
 };
+
+/* C2: 
+- Anh nghĩ ra rồi :D Cơ mà anh buồn ngủ quá, thôi để nhận xét sau nhé :D
+*/
+class Solution {
+public:
+    int findMaxLength(vector<int>& nums) {
+        unordered_map<int, int> hash;
+        int diff = 0;
+        hash.insert({diff, -1});
+        int res = 0;
+        for (int i = 0; i < nums.size(); ++i) {
+            if (nums[i]) {
+                diff++;
+            } else {
+                diff--;
+            }
+            if (hash.find(diff) == hash.end()) {
+                hash[diff] = i;
+            } else {
+                res = max(res, i - hash[diff]);
+            }
+        }
+        return res;
+    }
+};
