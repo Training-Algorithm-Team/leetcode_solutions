@@ -39,6 +39,7 @@ Ta có thể tìm được max của stack do ta chỉ thêm và bớt phần t�
 - Từ đó ta có thể tìm max của queue chính là max của 2 stack.
 - Time complexity: O(n)
 - Space complexity: O(k)
+- Thôi bỏ đi mà làm người :))
 */
 class Solution {
 public:
