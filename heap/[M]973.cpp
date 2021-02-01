@@ -15,10 +15,10 @@ public:
         int heapSize = n - k;
         
         vector<vector<int>> res;
-        for (int i = 0; i < n; ++i) {
-            int x = points[i][0], y = points[i][1];
+        for (auto &pos : points) {
+            int x = pos[0], y = pos[1];
             heap.push({x * x + y * y, {x, y}});
-            if (i >= heapSize) {
+            if (heap.size() > heapSize) {
                 res.push_back({heap.top().second.first, heap.top().second.second});
                 heap.pop();
             }
