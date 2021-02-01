@@ -13,9 +13,9 @@ private:
     int _k;
 public:
     KthLargest(int k, vector<int>& nums) : _k(k) {
-        for (int i = 0; i < nums.size(); ++i) {
-            heap.push(nums[i]);
-            if (i >= _k) {
+        for (int val : nums) {
+            heap.push(val);
+            if (heap.size() > _k) {
                 heap.pop();
             }
         }
