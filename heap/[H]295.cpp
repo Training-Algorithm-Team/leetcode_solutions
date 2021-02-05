@@ -102,22 +102,12 @@ public:
     }
     
     void addNum(int num) {
-        if (dataSize() & 1) {
-            if (!maxHeap.empty() && num < maxHeap.top()) {
-                maxHeap.push(num);
-                minHeap.push(maxHeap.top());
-                maxHeap.pop();
-            } else {
-                minHeap.push(num);
-            }
-        } else {
-            if (!minHeap.empty() && num > minHeap.top()) {
-                minHeap.push(num);
-                maxHeap.push(minHeap.top());
-                minHeap.pop();
-            } else {
-                maxHeap.push(num);
-            }
+        minHeap.push(num);
+        maxHeap.push(minHeap.top());
+        minHeap.pop();
+        if (maxHeap.size() > minHeap.size() + 1) {
+            minHeap.push(maxHeap.top());
+            maxHeap.pop();
         }
     }
     
