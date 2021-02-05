@@ -10,19 +10,13 @@ public:
     typedef pair<int, int> pii;
     typedef pair<int, pii> pip;
     vector<int> powerfulIntegers(int x, int y, int bound) {
-        if (bound < 2) {
-            return {};
-        }
-        if (x == 1 && y == 1) {
-            return {2};
-        }
         priority_queue<pip, vector<pip>, greater<pip>> heap;
 
-        if (y == 1 && x != 1) {
-            swap(x, y);
-        }
         for (int powy = 1; powy + 1 <= bound; powy *= y) {
             heap.push({1 + powy, {1, powy}});
+            if (y == 1) {
+                break;
+            }
         }    
         
         
