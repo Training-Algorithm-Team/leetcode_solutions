@@ -41,3 +41,31 @@ public:
         return false;
     }
 };
+
+/* Cách 2:
+- Giả sử với một đoạn tăng dần, 1 2 3 4, thì ta chỉ quan tâm điểm 4 và điểm 1, hai điểm 2 và 3 không ý nghĩa, ta có thể loại bỏ để tránh phải duyệt nhiều.
+Điều đó dẫn ta đến ý tưởng sử dụng 1 stack lưu dãy theo thứ tự giảm dần. Ngoài ra, tại mỗi đỉnh, ta lưu thêm giá trị min của đoạn trước đó để có thể so sánh về sau.
+- Như vậy đến một điểm bất kì, nếu điểm đó < top of stack và  > (min của đoạn kết thúc tại top of stack) thì ta kết luận.
+- Nếu lớn hơn top of stack thì ta pop ra và push giá trị mới vào.
+- Nếu nhỏ hơn thì ta push vào stack.
+*/
+class Solution {
+public:
+    typedef pair<int, int> pii;
+    bool find132pattern(vector<int>& nums) {
+        int n = nums.size();
+        stack<pii> st;
+        for (int i = 0; i < n; ++i) {
+            int minVal = nums[i];
+            while (!st.empty() && st.top().first < nums[i]) {
+                minVal = min(minVal, st.top().second);
+                st.pop();
+            }
+            if (!st.empty() && nums[i] < st.top().first && nums[i] > st.top().second) {
+                return true;   
+            }
+            st.push({nums[i], minVal});
+        }
+        return false;
+    }
+};
