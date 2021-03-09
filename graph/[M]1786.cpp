@@ -11,7 +11,7 @@ dp[j] calculated, we can return immediately (dp[lastNode] = 1). Time complexity 
 - Time complexity: n = number of nodes, m = number of edges.
   + Worst case: O(n * m) - for Bellman-Ford on full graph. It's a very loose boundary.
   + Average case: O(m * log(m + n)) as Mr. Quynh said :))
-- Space complexity: O(n) for adjacent list and dp table.
+- Space complexity: O(n + m) for adjacent list and dp table.
 */
 
 class Solution {
