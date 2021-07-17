@@ -1,5 +1,9 @@
 // https://leetcode.com/problems/search-a-2d-matrix-ii/
 
+/* Bai nay noi that la anh cung phai doc discussion chứ ko tự nghĩ ra duoc :(
+
+*/
+
 class Solution {
 public:
     bool searchMatrix(vector<vector<int>>& matrix, int target) {
