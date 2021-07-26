@@ -1,6 +1,29 @@
 // 152. Maximum Product Subarray - Medium
 // https://leetcode.com/problems/maximum-product-subarray/
 
+/* Doc discussion va xem nhung cach lam tot hon
+
+*/
+
+class Solution {
+public:
+    int maxProduct(vector<int> a) {
+        int n = a.size();
+        int leftProd = 0, rightProd = 0;
+        int res = a[0];
+        
+        for (int i = 0; i < n; i++) {
+            leftProd = (leftProd != 0? leftProd : 1) * a[i];
+            rightProd = (rightProd != 0? rightProd : 1) * a[n - i - 1];
+            
+            res = max(res, leftProd);
+            res = max(res, rightProd);
+        }
+        
+        return res;
+    }
+};
+
 /* Analysis:
 - We define:
   + fPos[i] = max positive product of subarray that ends at i
