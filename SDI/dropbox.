@@ -1,0 +1,80 @@
+DESIGN DROPBOX.
+
+/* Anh thay bai mau nay no dua nhieu ki thuat vao qua, trong phong van co can noi nhieu the khong. Anh so ko du thoi gian
+
+*/
+
+Features:
+- Upload and download file from any devices
+- Share files with other users
+- Automatically synchronize to other devices.
+- Up to GB files.
+- ACID is required.
+- Offline editting.
+
+Consider some aspects of our system:
+- Huge read/write requests.
+- Read/write nearly the same.
+- Internally, we divice the files to smaller chunk (maybe 4MB) -> easy to retry if failed.
+- Keeping the local metadata with clients can saves us a lot of works
+
+- 500M users, 100M Daily Active Users (DAU)
+- 3 devices / user.
+- 200 files / user => 100B files
+- 100KB / file, 100B * 100KB = 10PB
+- 1M active connections per minute
+
+- APIs? (later)
+
+- Servers
+  + Upload/Download files
+  + Update metadata
+  + Synchronization server 
+  
+- Clients:
+  + Upload/Download
+  + Detect changes
+  + Handle conflicts.
+  + Break the file into smaller chunks. Can save this metadata with file in DB.
+  + Keep local copy of metadata with clients.
+  + Open a long-polling connection to the server to listen for changes.
+=> Client has 4 parts:
+  + Internal Meta Data DB: file name, its chunks, file size, version, file path, ...
+  + Chunker: Divide and merge chunks.
+  + Watcher: listen to changes in local workspace and synchronization service.
+  + Indexers: Upload/Download chunks, update internal DB. Communicate with Synchronization Service to broadcast changes and update remote DB.
+=> Notes:
+  + If server is slow => delay action.
+  + Mobile device should sync on demand to save bandwidth and space.
+  
+- Meta DB: User MySQL because of its ACID intrinsic.
+- Synchronization Service (SS):
+  + Process files updates and applies changes to subscribed clients.
+  + Synchronize local DB with remote Meta DB.
+  + Transfer less data bettween clients and the Cloud service to achieve better response time => Use MD5 hash for each chunk.
+  + Because The communication between the SS and clients woulbe large, we can design a communication middleware.
+  
+- Message Queueing Service:
+  + Should be able to handle large number of requests.
+  + Supports asynchronous and loosely coupled message-based communication between distributed components in a highly available, reliable, and scalable queue.
+  + Requests Queue: clients share, requests to SS.
+  + Response Queue: each one for each user, deliver updated message to each client.
+
+- Cloud/Block Storage: Clients directly interact with storage service.
+
+- Work flow: Users update change -> Update metadata and commit changes -> Confirm and send notifications to clients B, C -> B, C receive and update chunks.
+
+- Data Deduplication: 2 approaches
+  + Post process: Store new chunks anyway and run some processes to look for duplication later.
+  + In-line: Calculate hash in real-time, if the chunks already store, refer to that chunk only.
+  
+- Data paritioning:
+  + Based on user_id
+  
+- Caching: 2 kinds of cache servers:
+  + Block/chunk cache: can cache all the chunk in mem -> 4MB/chunk => 1 server with 144GB can cache 36k chunks => Block server does not need to hit 
+block storage to get the chunk???? // To be checked
+  + Metadata cache: File and its chunks.
+
+- Load Balancers: Same as others.
+- Security, Permission, Sharing: store permission with each file
