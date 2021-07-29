@@ -1,0 +1,85 @@
+DESIGN INSTARGRAM
+
+
+Requirements:
+- Upload, download, view photos
+- Search based on titles.
+- Follow other users.
+- Generate a user's News Feed consisting of top photos
+
+- Users can upload unlimited number of photos => We should manage them efficently
+- Low latency
+- 100% reliable. Uploaded photos should never be lost.
+
+- 500M users, 1M daily active users.
+- 2M photos/day, 24 photos /secs.
+- 200KB / photo.
+=> 2M * 200KB = 400GB / day
+- 3 years, 400GB * 1000 days = 400TB
+- 2KB / photo record => Photo DB: 4TB / 3 years. => 4 partition => 6 - 8 partitions for high availability
+
+=> 24 write request /sec.
+- 1 : 100 ratio
+=> 2400 read request / sec.
+
+APIs:
+- upload(token, user_id, caption, photo_data)
+- view(token, user_id, photo_id)
+- getNewsFeed(token, user_id)
+
+DBs:
+- User:
+  user_id
+  email
+  DOB
+  Sex
+  Last_login
+  
+- Photo:
+  photo_id
+  author_id: INDEX
+  caption
+  creation_date: INDEX
+  path
+  
+- Follow:
+  Follower: INDEX
+  Followee: INDEX
+  
+- Relation DB: MySQL, n-n relation.
+- File storage: Amazon S3.
+- If we use NoSQL, we need separate tables to define the relationships between entities
+
+
+- Upload is slow process => can block read requests => should be separated two different read/write servers.
+- 24 write requests / secs fits 1 server, However, we deploy 2 servers to be highly available. 
+If only one instance of a service is required to run at any point, we can run a redundant secondary copy of the service that is not serving any traffic, 
+but it can take control after the failover when the primary has a problem.
+- 7 read servers
+- 1 LB.
+
+- We should not lose files => We must store back files in file storage as well as slave instances for the database.
+- We have 2 choices for Data Sharding:
++ By user id:
+  Good choice. All images will come together in 1 shard.
+  Unbalanced servers.
+  How can generate unique PhotoId? Append the shard id with each PhotoId => Uniquely defined.
++ By Photo id:
+  More balanced server.
+  Photo id must be generated before hand => We can create a Key Generating Service/DB => Another single point failure. => We can create 2 instance, 1 for odd id 
+and 1 for event id. We can put a load balancer in front of these 2 services using round-robin approach. We can extend this service to apply for other ids in case.
+
+- We can user a config file to map: Logic partitions -> Physical DB servers. If we want to move partitions, we just need to change the config file.
+
+- News Feed Generation:
+  + We can pre-generate the news feed for each users.
+  + Run a standalone service that periodically calculate the feeds and update to the DB.
+  + Next time, the service can generate from the last created time onwards.
+- 3 approaches to push news feed to users:
+  + Pull: Users manually or periodically request the news feed => Many requests may be empty.
+  + Push: Server pushes data to clients by Long-Polling or WebSocket technique. But, for some users, updates will be too much.
+  + Hybrid: Pull for famous users, and push for the others.
+  
+- We can generate the PhotoId by "epoch time" + "sequence id for that second", to quickly find the photo. // Need to check.
+- Our service should push the images closer to the users by using a large number of geographically distributed photo cache servers and CDNs. Use LRU 
+cache eviction policy.
